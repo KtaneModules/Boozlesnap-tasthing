@@ -22,8 +22,8 @@ public class boozlesnap : MonoBehaviour
     public Transform sortedCardParent;
     public TextMesh colorblindText;
 
-    private Card currentCard;
-    private Card previousCard;
+    private card currentCard;
+    private card previousCard;
     private int currentTurn;
     private int illegalProbability;
     private bool cardIllegal;
@@ -35,7 +35,8 @@ public class boozlesnap : MonoBehaviour
     private bool moduleStarted;
     private bool straighteningCard;
     private int cardsStacked;
-    private Queue<CardAnimation> animations = new Queue<CardAnimation>();
+    private Coroutine continueButtonMovement;
+    private Queue<cardAnimation> animations = new Queue<cardAnimation>();
     private static readonly string base36 = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     private static readonly string[] directions = new string[] { "up", "right", "down", "left" };
     private static readonly string[] ordinals = new string[] { "1st", "2nd", "3rd", "4th" };
@@ -84,6 +85,8 @@ public class boozlesnap : MonoBehaviour
         StartCoroutine(Animate());
         illegalProbability = 3;
         serialNumberValues = bomb.GetSerialNumber().Select(x => base36.IndexOf(x)).ToArray();
+        currentTurn = rnd.Range(0, 4);
+        continueButton.transform.localEulerAngles = new Vector3(270f, 90f * currentTurn - 90f, 0f);
     }
 
     private void PressContinueButton()
@@ -105,6 +108,9 @@ public class boozlesnap : MonoBehaviour
                 currentTurn = (currentTurn + 1) % 4;
                 while (ejectedPlayers[currentTurn])
                     currentTurn = (currentTurn + 1) % 4;
+                if (continueButtonMovement != null)
+                    StopCoroutine(continueButtonMovement);
+                continueButtonMovement = StartCoroutine(MoveContinueButton());
                 PlayCard();
             }
             else
@@ -141,16 +147,23 @@ public class boozlesnap : MonoBehaviour
         else
         {
             Debug.LogFormat("[Boozlesnap #{0}] Successfully ejected the {1} player.", moduleId, directions[ix]);
+            button.GetComponent<Renderer>().material.color = Color.gray;
             StartCoroutine(StraightenAllCards());
             ejectedPlayers[ix] = true;
             currentTurn = (currentTurn + 1) % 4;
             while (ejectedPlayers[currentTurn])
                 currentTurn = (currentTurn + 1) % 4;
+            if (continueButtonMovement != null)
+                StopCoroutine(continueButtonMovement);
+            continueButtonMovement = StartCoroutine(MoveContinueButton());
             if (ejectedPlayers.Count(x => !x) == 1)
             {
                 Debug.LogFormat("[Boozlesnap #{0}] Every player except one has been ejected. Module solved!", moduleId);
                 module.HandlePass();
                 moduleSolved = true;
+                colorblindText.text = "";
+                foreach (Renderer buttonRender in ejectButtons.Select(x => x.GetComponent<Renderer>()))
+                    buttonRender.material.color = Color.black;
             }
             else
                 PlayCard();
@@ -159,7 +172,6 @@ public class boozlesnap : MonoBehaviour
 
     private void BeginModule()
     {
-        currentTurn = rnd.Range(0, 4);
         Debug.LogFormat("[Boozlesnap #{0}] Play has started! The {1} player begins.", moduleId, directions[currentTurn]);
         PlayCard(firstTime: true);
     }
@@ -183,7 +195,7 @@ public class boozlesnap : MonoBehaviour
             cardIllegal = thisCardIllegal;
         }
         cardsStacked++;
-        animations.Enqueue(new CardAnimation(currentCard, currentTurn));
+        animations.Enqueue(new cardAnimation(currentCard, currentTurn));
         Debug.LogFormat("[Boozlesnap #{0}] The {1} player played a card with a glyph in group {2}, a color of {3}, and a count of {4}.", moduleId, directions[currentTurn], currentCard.group + 1, colorNames[currentCard.color], currentCard.count + 1);
         Debug.LogFormat("[Boozlesnap #{0}] This card is {1}.", moduleId, cardIllegal ? "illegal" : "legal");
         if (cardIllegal)
@@ -211,21 +223,21 @@ public class boozlesnap : MonoBehaviour
         else if (currentCard.count == previousCard.count)
         {
             if (currentCard.family == 0)
-                return previousCard.family != 4 || previousCard.family != 1;
+                return previousCard.family != 4 && previousCard.family != 1;
             else if (currentCard.family == 1)
-                return previousCard.family != 0 || previousCard.family != 2;
+                return previousCard.family != 0 && previousCard.family != 2;
             else if (currentCard.family == 2)
-                return previousCard.family != 1 || previousCard.family != 3;
+                return previousCard.family != 1 && previousCard.family != 3;
             else if (currentCard.family == 3)
-                return previousCard.family != 2 || previousCard.family != 4;
+                return previousCard.family != 2 && previousCard.family != 4;
             else
-                return previousCard.family != 3 || previousCard.family != 0;
+                return previousCard.family != 3 && previousCard.family != 0;
         }
         else
             return true;
     }
 
-    private class Card
+    private class card
     {
         public int group { get; set; }
         public int index { get; set; }
@@ -233,7 +245,7 @@ public class boozlesnap : MonoBehaviour
         public int family { get; set; }
         public int count { get; set; }
 
-        public Card(int g, int c, int ct)
+        public card(int g, int c, int ct)
         {
             group = g;
             index = rnd.Range(0, 4);
@@ -243,9 +255,24 @@ public class boozlesnap : MonoBehaviour
         }
     }
 
-    private Card GenerateCard()
+    private card GenerateCard()
     {
-        return new Card(rnd.Range(0, 4), rnd.Range(0, 15), rnd.Range(0, 5));
+        return new card(rnd.Range(0, 4), rnd.Range(0, 15), rnd.Range(0, 5));
+    }
+
+    private IEnumerator MoveContinueButton()
+    {
+        var start = continueButton.transform.localRotation;
+        var end = 90f * currentTurn - 90f;
+        var elapsed = 0f;
+        var duration = .75f;
+        while (elapsed < duration)
+        {
+            continueButton.transform.localRotation = Quaternion.Slerp(start, Quaternion.Euler(270f, end, 0f), elapsed / duration);
+            yield return null;
+            elapsed += Time.deltaTime;
+        }
+        continueButton.transform.localRotation = Quaternion.Euler(270f, end, 0f);
     }
 
     private IEnumerator Animate()
@@ -257,7 +284,7 @@ public class boozlesnap : MonoBehaviour
             var animation = animations.Dequeue();
             var thisCard = animation.card;
             var startPosition = startingPositions[animation.player];
-            var endPosition = new Vector3(0f, .0156f + .0005f * (float)cardsStacked, 0f);
+            var endPosition = new Vector3(0f, .0101f + .0005f * (float)cardsStacked, 0f);
             var endAngle = rnd.Range(-25f, 25f);
             var newCard = Instantiate(templateCard, cardParent, false);
             var frontFace = newCard.transform.Find("front");
@@ -307,12 +334,12 @@ public class boozlesnap : MonoBehaviour
         }
     }
 
-    private class CardAnimation
+    private class cardAnimation
     {
-        public Card card { get; set; }
+        public card card { get; set; }
         public int player { get; set; }
 
-        public CardAnimation(Card c, int p)
+        public cardAnimation(card c, int p)
         {
             card = c;
             player = p;
