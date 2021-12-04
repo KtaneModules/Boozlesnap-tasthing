@@ -7,7 +7,7 @@ using KModkit;
 using System.Text.RegularExpressions;
 using rnd = UnityEngine.Random;
 
-public class boozlesnap : MonoBehaviour
+public partial class boozlesnap : MonoBehaviour
 {
     public new KMAudio audio;
     public KMBombInfo bomb;
@@ -24,6 +24,7 @@ public class boozlesnap : MonoBehaviour
 
     private card currentCard;
     private card previousCard;
+    private List<card> allCards = new List<card>();
     private int currentTurn;
     private int illegalProbability;
     private bool cardIllegal;
@@ -190,10 +191,11 @@ public class boozlesnap : MonoBehaviour
         }
         else
         {
-            if (CalculateCardIllegality() != thisCardIllegal)
+            if (CalculateCardIllegality() != thisCardIllegal || allCards.Any(card => card == currentCard))
                 goto tryAgain;
             cardIllegal = thisCardIllegal;
         }
+        allCards.Add(currentCard);
         cardsStacked++;
         animations.Enqueue(new cardAnimation(currentCard, currentTurn));
         Debug.LogFormat("[Boozlesnap #{0}] The {1} player played a card with a glyph in group {2}, a color of {3}, and a count of {4}.", moduleId, directions[currentTurn], currentCard.group + 1, colorNames[currentCard.color], currentCard.count + 1);
@@ -235,24 +237,6 @@ public class boozlesnap : MonoBehaviour
         }
         else
             return true;
-    }
-
-    private class card
-    {
-        public int group { get; set; }
-        public int index { get; set; }
-        public int color { get; set; }
-        public int family { get; set; }
-        public int count { get; set; }
-
-        public card(int g, int c, int ct)
-        {
-            group = g;
-            index = rnd.Range(0, 4);
-            color = c;
-            family = c / 3;
-            count = ct;
-        }
     }
 
     private card GenerateCard()
@@ -331,18 +315,6 @@ public class boozlesnap : MonoBehaviour
             audio.PlaySoundAtTransform("card" + rnd.Range(1, 6), newCard.transform);
             if (moduleSolved && animations.Count == 0)
                 yield break;
-        }
-    }
-
-    private class cardAnimation
-    {
-        public card card { get; set; }
-        public int player { get; set; }
-
-        public cardAnimation(card c, int p)
-        {
-            card = c;
-            player = p;
         }
     }
 

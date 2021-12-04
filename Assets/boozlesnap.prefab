@@ -366,7 +366,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4142443250809168}
   - component: {fileID: 33147556413283164}
-  - component: {fileID: 64526836925345488}
   - component: {fileID: 23509162702146962}
   - component: {fileID: 114442709543066862}
   m_Layer: 0
@@ -495,7 +494,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4077334044402816}
   - component: {fileID: 33098503131845662}
-  - component: {fileID: 64996262431654278}
   - component: {fileID: 23939165777047244}
   - component: {fileID: 114668621018058838}
   m_Layer: 0
@@ -545,9 +543,9 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1454427772662028}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0.003}
-  m_LocalScale: {x: 0.005, y: 0.005, z: 0.005}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -0.00085714675}
+  m_LocalScale: {x: 0.00056, y: 0.0007500006, z: 0.0014285727}
   m_Children: []
   m_Father: {fileID: 4077334044402816}
   m_RootOrder: 0
@@ -560,7 +558,7 @@ Transform:
   m_GameObject: {fileID: 1938518260965578}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.0504, y: 0.07, z: 0.1}
+  m_LocalScale: {x: 0.45, y: 0.35, z: 0.35}
   m_Children:
   - {fileID: 4062725970378614}
   m_Father: {fileID: 4401619453322362}
@@ -591,7 +589,7 @@ Transform:
   m_GameObject: {fileID: 1678526600823604}
   m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: -0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.0504, y: 0.07, z: 0.1}
+  m_LocalScale: {x: 0.45, y: 0.35, z: 0.35}
   m_Children: []
   m_Father: {fileID: 4401619453322362}
   m_RootOrder: 1
@@ -713,7 +711,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1605460549076108}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.006, z: 0}
+  m_LocalPosition: {x: 0, y: 0.0049, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4077334044402816}
@@ -1523,7 +1521,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 0e34e7df586f5c44a91e5cb068334006, type: 2}
+  - {fileID: 2100000, guid: b6c3db06f19c13e49b9170e5ad3ec894, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1672,7 +1670,7 @@ MeshFilter:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1938518260965578}
-  m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: 4300000, guid: cc656750ad481874c811624e38c3ecc6, type: 3}
 --- !u!33 &33143507006142622
 MeshFilter:
   m_ObjectHideFlags: 1
@@ -1686,7 +1684,7 @@ MeshFilter:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1678526600823604}
-  m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: 4300000, guid: cc656750ad481874c811624e38c3ecc6, type: 3}
 --- !u!33 &33200875786921074
 MeshFilter:
   m_ObjectHideFlags: 1
@@ -1750,34 +1748,6 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1075501540903184}
   m_Mesh: {fileID: 4300090, guid: 29323f3700fb58743922408bd7babd64, type: 3}
---- !u!64 &64526836925345488
-MeshCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1678526600823604}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Convex: 0
-  m_CookingOptions: 14
-  m_SkinWidth: 0.01
-  m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
---- !u!64 &64996262431654278
-MeshCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1938518260965578}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Convex: 0
-  m_CookingOptions: 14
-  m_SkinWidth: 0.01
-  m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!102 &102197875493973600
 TextMesh:
   serializedVersion: 3
@@ -1855,7 +1825,7 @@ TextMesh:
   m_Anchor: 4
   m_Alignment: 1
   m_TabSize: 4
-  m_FontSize: 475
+  m_FontSize: 479
   m_FontStyle: 0
   m_RichText: 1
   m_Font: {fileID: 12800000, guid: 9e23f3792ab0294438dd484521c17846, type: 3}
@@ -2265,7 +2235,7 @@ MonoBehaviour:
   - {r: 0.8627451, g: 0.8627451, b: 0.8627451, a: 1}
   - {r: 0.43137255, g: 0.43137255, b: 0.43137255, a: 1}
   - {r: 0.078431375, g: 0.078431375, b: 0.078431375, a: 1}
-  matte: {r: 0.13333334, g: 0.13333334, b: 0.13333334, a: 1}
+  matte: {r: 0, g: 0, b: 0, a: 0}
   templateCard: {fileID: 1605460549076108}
   cardParent: {fileID: 4234650910065704}
   sortedCardParent: {fileID: 4162453573645574}
