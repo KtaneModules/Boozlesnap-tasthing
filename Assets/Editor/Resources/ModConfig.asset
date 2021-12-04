@@ -14,7 +14,9 @@ MonoBehaviour:
   id: boozlesnap
   title: Boozlesnap
   author: TasThing
-  description: 
-  version: 1.2
+  description: "Fold.\r\n\r\nModule idea by Vincology, implementation by TasThing.\r\n\r\nMade
+    for the first KTaNE modding jam.\r\n\r\n[url=https://ktane.timwi.de/HTML/Boozlesnap.html]Manual
+    HTML[/url]\r\n[url=https://ktane.timwi.de/PDF/Boozlesnap.pdf]Manual HTML[/url]"
+  version: 1.2.1
   outputFolder: build
   previewImage: {fileID: 2800000, guid: 9efb0ca2546447442b6e70e1bc91faef, type: 3}
