@@ -68,6 +68,7 @@ public partial class boozlesnap : MonoBehaviour
         new Vector3(-.1833f, .0857f, 0f)
     };
 
+    private bool TwitchPlaysActive;
     private static int moduleIdCounter = 1;
     private int moduleId;
     private bool moduleSolved;
@@ -78,7 +79,7 @@ public partial class boozlesnap : MonoBehaviour
         continueButton.OnInteract += delegate () { PressContinueButton(); return false; };
         foreach (KMSelectable button in ejectButtons)
             button.OnInteract += delegate () { PressEjectButton(button); return false; };
-        colorblindText.gameObject.SetActive(GetComponent<KMColorblindMode>().ColorblindModeActive);
+        module.OnActivate += delegate { colorblindText.gameObject.SetActive(GetComponent<KMColorblindMode>().ColorblindModeActive || TwitchPlaysActive); };
     }
 
     private void Start()
